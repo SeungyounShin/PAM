@@ -1,4 +1,5 @@
 from django.contrib import admin
+from mysite.models import UserProfile
 from mysite.models import Post
 
 # Register your models here.
@@ -9,4 +10,4 @@ class PostAdmin(admin.ModelAdmin):
     search_fields = ('product','description')
 
 admin.site.register(Post, PostAdmin)
-
+admin.site.register(UserProfile)

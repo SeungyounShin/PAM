@@ -1,0 +1,16 @@
+{% extends 'mysite/base.html' %}
+
+{% block content %}
+    <div class="post">
+
+        <div class="date">
+            {{ post.pub_date }}
+        </div>
+
+        <h1>{{ post.product }}</h1>
+        <p>{{ post.description|linebreaksbr }}</p>
+
+    </div>
+{% endblock %}
+
+

@@ -1,13 +1,18 @@
-{% extends 'blog/base.html' %}
+{% extends 'mysite/base.html' %}
 
 {% block content %}
     <div class="post">
-        {% if post.pub_date %}
-            <div class="date">
-                {{ post.pub_date }}
-            </div>
-        {% endif %}
+
+        <div class="date">
+            {{ post.pub_date }}
+        </div>
+
         <h1>{{ post.product }}</h1>
         <p>{{ post.description|linebreaksbr }}</p>
+
     </div>
 {% endblock %}
+
+<a class="btn btn-default" href="{% url 'post_edit' pk=post.pk %}"><span class="glyphicon glyphicon-pencil"></span></a>
+
+

@@ -14,7 +14,7 @@
     {% block content %}
         {% for post in posts %}
             <div class = "post">
-            <h1><a href="">{{ post.product }}</a></h1>
+            <h1><a href="{% url 'post_detail' pk=Post.pk %}">{{ post.product }}</a></h1>
 	    <p>published: {{ post.pub_date }}    <strong>가격 : {{ post.price }}</strong></p>
             <p>{{ post.description|linebreaksbr }}</p>
             </div>
