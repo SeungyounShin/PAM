@@ -1,0 +1,25 @@
+{% extends 'mysite/base.html' %}
+{% load staticfiles %}
+<html>
+    <head>
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="{% static 'css/mysite.css' %}">
+    <link href="https://fonts.googleapis.com/css?family=Dosis&subset=latin,latin-ext" rel="stylesheet" type="text/css"
+        <title>PAM</title>
+    </head>
+ 
+    <body>
+
+    {% block content %}
+        {% for post in posts %}
+            <div class = "post">
+            <h1><a href="">{{ post.product }}</a></h1>
+	    <p>published: {{ post.pub_date }}    <strong>가격 : {{ post.price }}</strong></p>
+            <p>{{ post.description|linebreaksbr }}</p>
+            </div>
+         {% endfor %}
+    {% endblock content %}
+		
+    </body>
+</html>
