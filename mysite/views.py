@@ -4,7 +4,10 @@ from .models import Post
 from .forms import PostForm, UserForm, UserProfileForm
 from django.template import RequestContext
 from django.http import HttpResponse, HttpResponseRedirect
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate
+from django.contrib.auth import login as auth_login
+from django.contrib.auth.forms import UserCreationForm
+from django.core.urlresolvers import reverse
 
 # Create your views here.
 
@@ -14,7 +17,7 @@ def post_list(request):
 
 def post_detail(request, pk):
     post = get_object_or_404(Post, pk=pk)
-    return render(request, 'mysite/post_detail.html', {'post':Post})
+    return render(request, 'mysite/post_detail.html', {'post':post})
 
 def post_new(request):
     if request.method == "POST":
@@ -43,14 +46,12 @@ def post_edit(request, pk):
        form = PostForm(instance = post)
     return render(request, 'mysite/post_edit.html',{'form':form})
 
-def register(request):
+def register(request): 
     context = RequestContext(request)
-    
-    registered = False
-    
-    if request.method == 'POST':
-        user_form = UserForm(data=request.POST)
-        profile_form = UserProfile(data=request.POST)
+    registered = False 
+    if request.method == "POST":
+        user_form = UserForm(request.POST)
+        profile_form = UserProfileForm(request.POST)
         
         if user_form.is_valid() and profile_form.is_valid():
             user = user_form.save()
@@ -59,35 +60,31 @@ def register(request):
             
             profile = profile_form.save(commit=False)
             profile.user = user
-
             profile.save()
+             
             registered = True
-        
-        else:
-            print(user_form.errors, profile_form.errors)
-
+        else :
+            print(user_form.errors,profile_form.errors)
     else:
         user_form = UserForm()
         profile_form = UserProfileForm()
-
-    return render_to_response(
-            'mysite/register.html',
-            {'user_form':user_form, 'profile_form':profile_form, 'registered': registered}, context)
-
+    
+    return render_to_response('mysite/register.html',{'user_form':user_form,'profile_form':profile_form,'registered':registered},context)   
+         
 def login(request):
     context = RequestContext(request)
-    if request.method == 'POST':
+    if request.method == "POST":
         username = request.POST['username']
         password = request.POST['password']
         user = authenticate(username = username,password=password)
-        if user:
+        if user is not None:
             if user.is_active:
-                login(request,user)
-                return HttpResponseRedirect('')
+                auth_login(request,user)
+                return HttpResponseRedirect('/')
             else:
                 return HttpResponse("Your PAM account is disalbed.")
         else:
-             print("Invalid login details : {0}, {1}", format(username,password))
+             print("Invalid login details : {0}, {1}".format(username,password))
              return HttpResponse("Invalid login details supplied.")
 
     else:

@@ -1,4 +1,5 @@
 from django.conf.urls import url
+from django.views.generic import TemplateView
 from . import views
 
 urlpatterns = [
@@ -8,6 +9,8 @@ urlpatterns = [
     url(r'^post/(?P<pk>[0-9]+)/edit/$',views.post_edit, name = 'post_edit'),
     url(r'^register/$',views.register, name='register'),
     url(r'^login/$',views.login, name ='login'),
+    url(r'^sign_up_ok/$', TemplateView.as_view(template_name = 'mysite/sign_up_ok.html'),name = 'sign_up_ok'),
+
 ]
 
 

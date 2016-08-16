@@ -12,17 +12,18 @@
         <h1>Register With PAM</h1>
         {% if registered %}
             <strong>Thank you for registering!</strong>
-            <a href = "/mysite">Return to MainPage.</a><br />
+            <a href = "/">Return to MainPage.</a><br />
         {% else %}
         <strong>Register here!</strong><br />
   
-        <form id = "user_form" method = "post" action = "/mysite/register/" enctype = "multipar/form-date">
+        <form id = "user_form" method = "post" action = "/register/" enctype = "multipar/form-date">
 
-	    {% endif %}
+	    {% csrf_token %}
             {{ user_form.as_p }}
             {{ profile_form.as_p}}
 
            <input type = "submit" name "submit" value = "Register" />
        </form>
+       {% endif %}
     </body>
 </html>
