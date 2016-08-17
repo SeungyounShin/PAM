@@ -1,13 +1,15 @@
 from django.shortcuts import render, get_object_or_404,redirect,render_to_response
 from django.utils import timezone
-from .models import Post
-from .forms import PostForm, UserForm, UserProfileForm
+from .models import Post, Comment
+from .forms import PostForm, UserForm, UserProfileForm, CommentForm
 from django.template import RequestContext
 from django.http import HttpResponse, HttpResponseRedirect
-from django.contrib.auth import authenticate
+from django.contrib.auth import authenticate, logout
 from django.contrib.auth import login as auth_login
 from django.contrib.auth.forms import UserCreationForm
 from django.core.urlresolvers import reverse
+from django.views.decorators.csrf import csrf_exempt
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 
@@ -44,8 +46,9 @@ def post_edit(request, pk):
             return redirect('mysite/views.post_detail',pk=post.pk)
     else:
        form = PostForm(instance = post)
-    return render(request, 'mysite/post_edit.html',{'form':form})
+    return render(request, '/post_edit.html',{'form':form})
 
+@csrf_exempt
 def register(request): 
     context = RequestContext(request)
     registered = False 
@@ -69,8 +72,9 @@ def register(request):
         user_form = UserForm()
         profile_form = UserProfileForm()
     
-    return render_to_response('mysite/register.html',{'user_form':user_form,'profile_form':profile_form,'registered':registered},context)   
-         
+    return render_to_response('mysite/register.html',{'user_form':user_form,'profile_form':profile_form,'registered':registered},context)    
+
+@csrf_exempt
 def login(request):
     context = RequestContext(request)
     if request.method == "POST":
@@ -90,5 +94,34 @@ def login(request):
     else:
         return render_to_response('mysite/login.html',{},context)
 
+@login_required
+def user_logout(request):
+    logout(request)
+    return HttpResponseRedirect('/')
 
- 
+def add_comment_to_post(request, pk):
+    post = get_object_or_404(Post, pk=pk)
+    if request.method == "POST":
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.post = post
+            comment.save()
+            return redirect('mysite.views.post_detail',pk = post.pk)
+    else:
+        form = CommentForm()
+    return render(request, 'mysite/add_comment_to_post.html', {'form':form})
+
+@login_required
+def comment_approve(request, pk):
+    comment = get_object_or_404(Comment, pk=pk)
+    comment.approve()
+    return redirect('mysite.views.post_detail', pk = comment.post.pk)
+
+@login_required
+def comment_remove(request, pk):
+    comment = get_object_or_404(Comment, pk = pk)
+    post_pk = comment.post.pk
+    comment.delete()
+    return redirect('mysite.views.post_detail', pk = post_pk)\
+

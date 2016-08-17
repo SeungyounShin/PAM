@@ -12,10 +12,14 @@
         <body>
             <div class="page-header">
                 <h1><a href="{% url 'post_list' %}"><strong>대신팜(필요없는 문제집, 필기구 여기서 팔아!) </strong></a></h1>
-		<a href="{% url 'login' %}" class="btn btn-default" role="button">로그인</a>
-		<a href="{% url 'register' %}" class="btn btn-default" role="button">회원가입</a>
-		<a href="{% url 'post_new' %}" class="btn btn-default" role="button">물건팔기!</a>
-</div>
+                {% if user.is_authenticated %}
+                <a href="{% url 'logout' %}" class="btn btn-default" role="button">로그아웃</a>
+                {% else %}
+                <a href="{% url 'login' %}" class="btn btn-default" role="button">로그인</a>
+		        <a href="{% url 'register' %}" class="btn btn-default" role="button">회원가입</a>
+                {% endif %}
+	            <a href="{% url 'post_new' %}" class="btn btn-default" role="button">물건팔기!</a>
+            </div>
 
 	    <div class="content container">
     		<div class="row">

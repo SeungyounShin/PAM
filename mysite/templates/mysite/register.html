@@ -2,6 +2,7 @@
 <html>
 
     <head>
+    <meta charset = "UTF-8">
 	<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
 	<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
         <link href="https://fonts.googleapis.com/css?family=Dosis&subset=latin,latin-ext" rel="stylesheet" type="text/css">
@@ -18,7 +19,7 @@
   
         <form id = "user_form" method = "post" action = "/register/" enctype = "multipar/form-date">
 
-	    {% csrf_token %}
+	        {% csrf_token %}
             {{ user_form.as_p }}
             {{ profile_form.as_p}}
 
