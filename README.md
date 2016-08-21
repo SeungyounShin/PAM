@@ -8,6 +8,6 @@ Daeshinhigh open market platform
 Screenshot
 ----------
 
-![alt_tag](Selection_013.png)
+![alt_tag](daeshinpam.png)
 
 
